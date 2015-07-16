@@ -6,17 +6,27 @@
     <title>Canvas Exercise</title>
   </head>
   <body>
-    <canvas id="canvas" width="600" height="400"></canvas>
-    <select>
-      <option value="choose" disabled selected>Choose Shape</option>
-      <option value="square">Square</option>
-      <option value="circle">Circle</option>
-    </select>
+    <div>
+      <canvas id="canvas" width="550" height="400"></canvas>
+    </div>
 
-    <!-- <label for='color'>Choose a color</label>
-    <input type="color" name="color_picker" id='color'> -->
+    <div>
+      <label for="select-shape">Choose a Shape&nbsp;</label>
+      <select id="select-shape">
+        <option value="square">Square</option>
+        <option value="circle">Circle</option>
+      </select>
 
-    <!-- <button id="addButton" type="button" name="button">Set Shape</button> -->
+      <br><br>
+
+      <label for='color'>Choose a Color&nbsp;</label>
+      <input type="color" name="color_picker" id='color'>
+
+      <br><br>
+
+      <button type="button" name="fill_button" id='fill-button'>Fill Canvas with Shapes</button>
+    </div>
+
     <script type="application/javascript" src='app.js'></script>
   </body>
 </html>

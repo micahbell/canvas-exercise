@@ -1,48 +1,76 @@
 var canvas = document.getElementById("canvas");
 var addButton = document.getElementById('addButton');
-var randColor = 'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + Math.random().toFixed(2) + ')';
-var randSize = Math.floor(Math.random() * 300);
 
-// function Shape(x, y, size, color) {
-//   this.x = event.x;
-//   this.y = event.y;
-//   this.size = Math.floor(Math.random() * 300);
-//   this.color = 'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + Math.random().toFixed(2) + ')';
-//   // this.shape = shape;?????
-// };
-//
-// function Square() {
-//   Shape.call(this, x, y, size, color);
-// }
-//
-// function Circle() {
-//   Shape.call(this, x, y, size, color);
-//   this.startAngle = startAngle;
-//   this.endAngle = endAngle;
-//   this.anticlockwise = anticlockwise;
-// }
+// Shape ==========
+function Shape(x, y, width, color) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.color = color;
+};
 
-// position x, y, color, draw, square or circle
+// Square ==========
+function Square(x, y, width, color) {
+  Shape.call(this, x, y, width, color);
+};
 
-var selectShape = document.getElementsByTagName('select')[0];
-selectShape.addEventListener('change', function() {
-  canvas.addEventListener('click', function() {
-    if(canvas.getContext) {
-      var ctx = canvas.getContext('2d');
-      ctx.fillStyle = randColor;
-      var x = event.x;
-      var y = event.y;
+Square.prototype.draw = function() {
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = this.color;
+  ctx.fillRect(this.x, this.y, this.width, this.width);
+};
+
+//Circle ==========
+function Circle(x, y, width, color) {
+  Shape.call(this, x, y, width, color);
+  this.startAngle = 0;
+  this.endAngle = 2 * Math.PI;
+};
+
+Circle.prototype.draw = function() {
+  var ctx = canvas.getContext('2d');
+  var circle = new Path2D;
+  circle.arc(this.x, this.y, this.width, this.startAngle, this.endAngle, this.color);
+  ctx.fillStyle = this.color;
+  ctx.fill(circle);
+};
+
+
+canvas.addEventListener('click', function() {
+  var selectedShape = document.getElementsByTagName('select')[0];
+  var x = event.x;
+  var y = event.y;
+  var selectedColor = document.getElementsByName('color_picker')[0].value;
+  if(selectedShape.value === 'square') {
+    var newSquare = new Square(x, y, 40, selectedColor);
+    newSquare.draw()
+  } else {
+    var newCircle = new Circle(x, y, 25, selectedColor);
+    newCircle.draw();
+  };
+});
+
+// Fill Canvas ===========
+var fillButton = document.getElementById('fill-button');
+fillButton.addEventListener('click', function() {
+  for (var i = 0; i < 30; i++) {
+    var randomColor = 'rgba(' +
+      (Math.floor(Math.random() * 256)) + ',' +
+      (Math.floor(Math.random() * 256)) + ',' +
+      (Math.floor(Math.random() * 256)) + ',' +
+      Math.random().toFixed(2) + ')';
+    var randomSize = Math.floor(Math.random() * 350);
+    var randomX = Math.floor(Math.random() * canvas.width);
+    var randomY = Math.floor(Math.random() * canvas.height);
+    var randomShape = Math.floor(Math.random() * 2);
+    if(randomShape === 1) {
+        var newSquare = new Square(randomX, randomY, randomSize, randomColor);
+        newSquare.draw()
+      } else {
+        var newCircle = new Circle(randomX, randomY, randomSize, randomColor);
+        newCircle.draw();
     };
-
-    if(selectShape.value === 'square') {
-      ctx.fillRect(x, y, randSize, randSize);
-    } else {
-      var circle = new Path2D;
-      // arc(x, y, radius, startAngle, endAngle, anticlockwise)
-      circle.arc(x, y, randSize, 0, 2 * Math.PI);
-      ctx.fill(circle);
-    };
-  });
+  };
 });
 
 
